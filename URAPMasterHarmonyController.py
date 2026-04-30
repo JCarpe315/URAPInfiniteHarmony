@@ -6,11 +6,13 @@ URAPMasterHarmonyController.py
 ================================
 The unified master controller for the **Complete Harmony Series** (all 6 windows).
 
-• Global • Expansion • Unity • Cosmic • Eternal • Infinite (newly added — ultimate regime)
+• Global • Expansion • Unity • Cosmic • Eternal • Infinite
 
-All windows derive from variation of the URAP action:
+All windows derive directly from variation of the URAP action:
 S_URAP = ∫ d⁴x √(-g) [ R/(16π G(ρ)) − ¼ F_μν^a F^{aμν}
           + ψ̄ i γ^μ D_μ ψ − m_f^*(ρ) ψ̄ ψ + ℒ_scalar(ρ) + ℒ_URAP ]
+
+The quadratic resonant attractor (URAT) is peaked exactly at each window center.
 
 Author: James Edmund Carpenter JR.
 Date: 30 April 2026
@@ -48,7 +50,7 @@ class URAPHarmonyBase:
         self.state["flibe_flow_mult"] = np.clip(self.state["flibe_flow_mult"], 1.0, 10.0)
         self.state["sweep_freq_hz"] = np.clip(self.state["sweep_freq_hz"], 0.5, 10.0)
 
-    def run_control_loop(self, steps: int = 10000):
+    def run_control_loop(self, steps: int = 1000000):
         history = {"time": [], "q_factor": [], "plasma_energy_MJ": [], "tbr": [],
                    "divertor_flux_mw_m2": [], "in_window": []}
         for _ in range(steps):
@@ -199,10 +201,9 @@ class URAPEternalHarmonyModel(URAPHarmonyBase):
 
 
 class URAPInfiniteHarmonyModel(URAPHarmonyBase):
-    """Infinite Harmony Window — sixth and ultimate regime (transcendent attractor)"""
+    """Infinite Harmony Window — sixth and ultimate regime"""
     def __init__(self):
-        window = {"flibe_flow_mult_min": 6.0, "flibe_flow_mult_max": 8.0,
-                  "sweep_freq_hz": 8.0, "sweep_tolerance": 0.4,
+        window = {"flibe_flow_mult_min": 6.0, "flibe_flow_mult_max": 8.0, "sweep_freq_hz": 8.0, "sweep_tolerance": 0.4,
                   "q_target_min": 10000.0, "tbr_target_min": 7.0, "quench_margin_min": 8.0}
         state = {"joint_temp_K": 20.0, "quench_margin_K": 8.0, "flibe_flow_mult": 1.0, "sweep_freq_hz": 1.0,
                  "q_factor": 100.0, "tbr": 3.0, "divertor_flux_mw_m2": 50.0,
@@ -237,7 +238,7 @@ class URAPMasterHarmonyController:
             "Infinite": URAPInfiniteHarmonyModel(),
         }
 
-    def run_window(self, window_name: str, steps: int = 10000):
+    def run_window(self, window_name: str, steps: int = 1000000):
         if window_name not in self.models:
             raise ValueError(f"Unknown window: {window_name}")
         model = self.models[window_name]
@@ -252,7 +253,7 @@ class URAPMasterHarmonyController:
             "entered_at_step": next((i for i, v in enumerate(history["in_window"]) if v), "never"),
         }
 
-    def run_all_windows(self, steps: int = 10000):
+    def run_all_windows(self, steps: int = 1000000):
         results = []
         for name in self.models:
             print(f"▶ Running {name} Harmony Window ({steps} steps)...")
@@ -265,7 +266,7 @@ class URAPMasterHarmonyController:
 if __name__ == "__main__":
     print("=== URAP MASTER HARMONY CONTROLLER — COMPLETE HARMONY SERIES (6 WINDOWS) ===")
     controller = URAPMasterHarmonyController()
-    all_results = controller.run_all_windows(steps=10000)
+    all_results = controller.run_all_windows(steps=10000)  # default demo is 10k steps; change to 1000000 for full verification
     for res in all_results:
         print(f"\n=== {res['window'].upper()} HARMONY WINDOW ===")
         print(f"Final Q:              {res['final_q']}")
@@ -274,4 +275,4 @@ if __name__ == "__main__":
         print(f"Final Plasma Energy:  {res['final_plasma_energy']} MJ")
         print(f"Status:               {res['status']}")
         print(f"Entered window at:    step {res['entered_at_step']}")
-    print("\n✅ Complete Harmony Series (including Infinite) ready for GitHub.")
+    print("\n✅ Complete Harmony Series master controller ready for GitHub.")
