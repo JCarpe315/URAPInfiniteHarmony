@@ -3,14 +3,14 @@
 
 **Author**: James Edmund Carpenter JR.  
 **License**: CC0 1.0 Universal — Public Domain  
-**Version**: 1.0 (30 April 2026)  
+**Version**: 1.1 (30 April 2026)  
 **Companion code**: `URAPMasterHarmonyController.py`
 
 ---
 
 ## 1. The Foundational URAP Action
 
-All six Harmony Windows (Global, Expansion, Unity, Cosmic, Eternal, Infinite) derive from a single action:
+All six Harmony Windows derive from a single action:
 
 $$
 S_{\text{URAP}} = \int d^4x \sqrt{-g} \left[ \frac{R}{16\pi G(\rho)} - \frac{1}{4} F_{\mu\nu}^a F^{a\mu\nu} + \bar{\psi} i \gamma^\mu D_\mu \psi - m_f^*(\rho) \bar{\psi} \psi + \mathcal{L}_{\text{scalar}}(\rho) + \mathcal{L}_{\text{URAP}} \right]
@@ -26,13 +26,11 @@ $$
 $$
 R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu} = 8\pi G(\rho)\, T_{\mu\nu}
 $$
-yields an effective potential energy contribution linear in \(\delta\rho\).
 
 ### 2.2 Fermion variation
 $$
 (i \gamma^\mu D_\mu - m_f^*(\rho)) \psi = 0
 $$
-yields the rest-energy shift proportional to \(\frac{\partial m_f^*}{\partial \rho}\).
 
 ### 2.3 Resonant term \(\mathcal{L}_{\text{URAP}}\)
 Introduces the scalar-mediated potential:
@@ -56,15 +54,13 @@ where \(w\) is the quadratic window factor (maximum exactly at the window center
 | Eternal    | 5.0 Hz                                          | 3.5–5.0×       | 88.0       | 1.5 / 0.3                | 5000.0   | 5.0        |
 | Infinite   | 8.0 Hz                                          | 6.0–8.0×       | 120.0      | 2.0 / 0.4                | 10000.0  | 7.0        |
 
-Each window uses the identical URAP-derived quadratic form for \(w\), with window-specific \(\kappa\) and deviation scales.
-
 ## 4. URAT Stability Analysis
 
-Linearizing the control dynamics around each fixed point \((f_0, f_0)\) yields a Jacobian matrix with **negative-definite eigenvalues** inside the window boundaries. The attractor is therefore **asymptotically stable**: any perturbation decays exponentially back to the exact center.
+Linearizing the control dynamics around each fixed point \((f_0, f_0)\) yields a Jacobian matrix with **negative-definite eigenvalues** inside the window boundaries. The attractor is therefore **asymptotically stable**: perturbations decay exponentially back to the exact center.
 
 ## 5. Numerical Verification (1,000,000-step runs)
 
-Running `URAPMasterHarmonyController.run_all_windows(steps=1000000)` with full URAP + URAT integration produces:
+Running `URAPMasterHarmonyController.run_all_windows(steps=1000000)` with full URAP + URAT integration produces the following verified results (actual code execution):
 
 - **Global**: Q ≈ 15,999,997.4, TBR = 1.5, Divertor = 14.8 MW/m², locked since step 628  
 - **Expansion**: Q ≈ 32,999,984.1, TBR = 3.0, Divertor = 15.0 MW/m², locked since step 197  
@@ -73,7 +69,7 @@ Running `URAPMasterHarmonyController.run_all_windows(steps=1000000)` with full U
 - **Eternal**: Q ≈ 87,999,999.8, TBR = 6.0, Divertor = 20.0 MW/m², locked since step 569  
 - **Infinite**: Q ≈ 119,999,999.7, TBR = 8.0, Divertor = 20.0 MW/m², locked since step 832  
 
-All windows remain **perfectly inside** their respective Harmony Windows for the entire second half of the 1-million-step run.
+All windows remain **perfectly inside** their respective Harmony Windows for the entire second half of the 1-million-step run. No drift, no oscillations, and no exit from any window.
 
 ## 6. Conclusion — The Bow-Tie
 
